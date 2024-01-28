@@ -1,0 +1,45 @@
+--- building/linux64x64/squeak.cog.spur/build/mvm.orig	2022-06-02 14:10:44 UTC
++++ building/linux64x64/squeak.cog.spur/build/mvm
+@@ -1,11 +1,11 @@ set -e
+ #!/usr/bin/env bash
+ set -e
+ # Spur VM with VM profiler and threaded heartbeat
+-INSTALLDIR=sqcogspur64linuxht
++INSTALLDIR=/home/mutoh/work/ports/lang/opensmalltalk-vm/work/stage/usr/local
+ # Some gcc versions create a broken VM using -O2
+ OPT="-g -O2 -DNDEBUG -DDEBUGVM=0"
+ 
+-CFLAGS="$OPT -msse2 -DCOGMTVM=0"
++CFLAGS="$OPT -msse2 -DCOGMTVM=0 -Wno-error=incompatible-function-pointer-types -Wno-error=int-conversion"
+ LIBS=""
+ LDFLAGS=""
+ case $(uname -s) in
+@@ -14,6 +14,11 @@ case $(uname -s) in
+            LIBS="$LIBS -lexecinfo"
+            LDFLAGS="$LDFLAGS -L/usr/local/lib"
+            ;;
++  FreeBSD)
++           CFLAGS="$CFLAGS -I/usr/local/include"
++           LIBS="$LIBS -lexecinfo -liconv"
++           LDFLAGS="$LDFLAGS -L/usr/local/lib"
++           ;;
+ esac
+ 
+ # Prefer clang over gcc, but use gcc if clang isn't available...
+@@ -25,8 +30,8 @@ if ../../../../scripts/checkSCCSversion ; then exit 1;
+ fi
+ 
+ if ../../../../scripts/checkSCCSversion ; then exit 1; fi
+-echo -n "clean? "
+-read a
++#echo -n "clean? "
++#read a
+ case $a in
+ n|no|N|NO)	echo "ok but this isn't safe!!";;
+ *)			test -f Makefile && make reallyclean
+@@ -46,4 +51,4 @@ rm -rf ../../../../products/$INSTALLDIR
+ rm -rf ../../../../products/$INSTALLDIR
+ # prefer make install prefix=`readlink -f \`pwd\`/../../../../products/$INSTALLDIR`
+ # but older linux readlinks lack the -f flag
+-make install-squeak install-plugins prefix=`(cd ../../../../;pwd)`/products/$INSTALLDIR 2>&1 | tee LOG ; test ${PIPESTATUS[0]} -eq 0
++make install-squeak install-plugins prefix=$INSTALLDIR 2>&1 | tee LOG ; test ${PIPESTATUS[0]} -eq 0
