@@ -19,7 +19,6 @@ LIB_DEPENDS=	libaudio.so:audio/nas \
 		libasound.so:audio/alsa-lib \
 		libpulse-simple.so:audio/pulseaudio \
 		libv4l2.so:multimedia/libv4l
-#RUN_DEPENDS=
 
 USES=		gl gnome pkgconfig xorg iconv
 USE_GL=		gl
@@ -29,8 +28,8 @@ USE_XORG=	ice sm x11 xext xrender xrandr
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenSmalltalk
 
-#LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
-#CONFIGURE_ARGS+=${ICONV_CONFIGURE_ARG}
+REINPLACE_ARGS=	-i
+SQUEAK_BUILD_DIR= ${WRKSRC}/building/linux64x64/squeak.cog.spur/build/
 
 .include <bsd.port.options.mk>
 
@@ -42,11 +41,18 @@ CFLAGS+=        -Wno-error=incompatible-function-pointer-types
 .endif
 
 post-patch:
-	${SED} -i -e 's|INSTALLDIR=sqcogspur64linuxht|INSTALLDIR=${STAGEDIR}${PREFIX}|' ${WRKSRC}/building/linux64x64/squeak.cog.spur/build/mvm
-	${SED} -i -e 's|$$Rev|$$Rev: ${PORTVERSION} |' ${WRKSRC}/platforms/Cross/vm/sqSCCSVersion.h
-	${SED} -i -e 's|$$Date|$$Date: ${PORTVERSION} |' ${WRKSRC}/platforms/Cross/vm/sqSCCSVersion.h
+	@${REINPLACE_CMD} -e 's|INSTALLDIR=sqcogspur64linuxht|INSTALLDIR=${STAGEDIR}${PREFIX}|' ${WRKSRC}/building/linux64x64/squeak.cog.spur/build/mvm
+	@${REINPLACE_CMD} -e 's|$$Rev|$$Rev: ${PORTVERSION} |' ${WRKSRC}/platforms/Cross/vm/sqSCCSVersion.h
+	@${REINPLACE_CMD} -e 's|$$Date|$$Date: ${PORTVERSION} |' ${WRKSRC}/platforms/Cross/vm/sqSCCSVersion.h
 
 do-build:
-	cd ${WRKSRC}/building/linux64x64/squeak.cog.spur/build/ && ./mvm
+	cd ${SQUEAK_BUILD_DIR} && ./mvm
+
+do-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/squeak/${PORTVERSION}
+	${INSTALL_LIB} ${SQUEAK_BUILD_DIR}/*/.libs/*.so ${STAGEDIR}${PREFIX}/lib/squeak/${PORTVERSION}
+	${INSTALL_PROGRAM} ${SQUEAK_BUILD_DIR}/squeak ${STAGEDIR}${PREFIX}/lib/squeak/${PORTVERSION}
+	${INSTALL_SCRIPT} ${FILESDIR}/squeak.sh ${STAGEDIR}${PREFIX}/bin/squeak${PORTVERSION}
+	@${REINPLACE_CMD} -e 's|##PORTVERSION##|${PORTVERSION}|' ${STAGEDIR}${PREFIX}/bin/squeak${PORTVERSION}
 
 .include <bsd.port.mk>
