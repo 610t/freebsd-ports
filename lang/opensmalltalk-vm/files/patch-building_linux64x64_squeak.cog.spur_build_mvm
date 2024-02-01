@@ -1,11 +1,6 @@
---- building/linux64x64/squeak.cog.spur/build/mvm.orig	2022-06-02 14:10:44 UTC
+--- building/linux64x64/squeak.cog.spur/build/mvm.orig	2023-12-18 14:41:18 UTC
 +++ building/linux64x64/squeak.cog.spur/build/mvm
-@@ -1,11 +1,11 @@ set -e
- #!/usr/bin/env bash
- set -e
- # Spur VM with VM profiler and threaded heartbeat
--INSTALLDIR=sqcogspur64linuxht
-+INSTALLDIR=/home/mutoh/work/ports/lang/opensmalltalk-vm/work/stage/usr/local
+@@ -5,7 +5,7 @@ OPT="-g -O2 -DNDEBUG -DDEBUGVM=0"
  # Some gcc versions create a broken VM using -O2
  OPT="-g -O2 -DNDEBUG -DDEBUGVM=0"
  
@@ -37,7 +32,7 @@
  case $a in
  n|no|N|NO)	echo "ok but this isn't safe!!";;
  *)			test -f Makefile && make reallyclean
-@@ -46,4 +51,4 @@ rm -rf ../../../../products/$INSTALLDIR
+@@ -45,4 +50,4 @@ rm -rf ../../../../products/$INSTALLDIR
  rm -rf ../../../../products/$INSTALLDIR
  # prefer make install prefix=`readlink -f \`pwd\`/../../../../products/$INSTALLDIR`
  # but older linux readlinks lack the -f flag

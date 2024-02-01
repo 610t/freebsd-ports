@@ -1,13 +1,11 @@
---- platforms/unix/plugins/JoystickTabletPlugin/sqUnixJoystickTablet.c.orig	2024-01-08 05:03:07 UTC
+--- platforms/unix/plugins/JoystickTabletPlugin/sqUnixJoystickTablet.c.orig	2023-12-18 14:41:18 UTC
 +++ platforms/unix/plugins/JoystickTabletPlugin/sqUnixJoystickTablet.c
-@@ -42,8 +42,8 @@
- #include <dirent.h>
+@@ -40,7 +40,7 @@
  #include <errno.h>
  #include <poll.h>
--#include <linux/input-event-codes.h>
+ #if defined(HAVE_LINUX_INPUT_H)
 -#include <linux/input.h>
-+#include <dev/evdev/input-event-codes.h>
 +#include <dev/evdev/input.h>
- #include "JoystickTabletPlugin.h"
- 
- #define DEVICE_DIR 	"/dev/input/by-id/"
+ #else
+ #error Not currently supported
+ #endif
