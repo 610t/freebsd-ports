@@ -28,7 +28,6 @@ USE_XORG=	ice sm x11 xext xrender xrandr
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenSmalltalk
 
-REINPLACE_ARGS=	-i
 SQUEAK_BUILD_DIR= ${WRKSRC}/building/linux64x64/squeak.cog.spur/build/
 
 .include <bsd.port.options.mk>
