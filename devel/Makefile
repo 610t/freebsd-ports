@@ -351,6 +351,7 @@
     SUBDIR += catch2
     SUBDIR += cbang
     SUBDIR += cbfmt
+    SUBDIR += cbmc
     SUBDIR += cbrowser
     SUBDIR += cc65
     SUBDIR += ccache
@@ -612,6 +613,7 @@
     SUBDIR += electron25
     SUBDIR += electron26
     SUBDIR += electron27
+    SUBDIR += electron28
     SUBDIR += elf
     SUBDIR += elf-dissector
     SUBDIR += elfcat
@@ -1513,6 +1515,7 @@
     SUBDIR += llvm15
     SUBDIR += llvm16
     SUBDIR += llvm17
+    SUBDIR += llvm18
     SUBDIR += lm4tools
     SUBDIR += lmdbg
     SUBDIR += lndir

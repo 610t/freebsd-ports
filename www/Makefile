@@ -317,7 +317,6 @@
     SUBDIR += libwww
     SUBDIR += lightsquid
     SUBDIR += lighttpd
-    SUBDIR += lighttpd-mod_h264_streaming
     SUBDIR += limesurvey
     SUBDIR += linklint
     SUBDIR += links
@@ -443,6 +442,7 @@
     SUBDIR += mythplugin-mythweb
     SUBDIR += nanoblogger
     SUBDIR += nanoblogger-extra
+    SUBDIR += ncgopher
     SUBDIR += neon
     SUBDIR += netrik
     SUBDIR += netstiff
